@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bercut.com/spec/schema/ComplexDefinition" xmlns:sd="http://www.bercut.com/spec/schema/SimpleDefinition" targetNamespace="http://www.bercut.com/spec/schema/ComplexDefinition" elementFormDefault="qualified" version="1.3">
+	<!-- В данном файле объявляются только сложные типы (complexType) типы, которые должны быть использованы в платформе V3
+	Крайне желательно использовать типы описанные в данном файле (в части формирования типов данных для wsdl, xsd описаний сервисов и пользовательских сервисов, и т.п. артефактов)
+	Данное файл вводится с целью унифицировать и использовать одинаковый и законченный набор сложных типов в платформе V3, что приведет к значительному упрощению написания бизнес-процессов и других артефактов платформы V3
+	Расширение данного файла должно происходить только в том случае, если типа с таким функциональным назначением в данном файле еще нет или требуется расширить отдельный тип дополнительными элементами
+	Необходимо согласование расширения данного файла с архитекторами  
+ -->
+	<xsd:import namespace="http://www.bercut.com/spec/schema/SimpleDefinition" schemaLocation="SimpleDefinition.xsd"/>
+	<!-- элементы простого типа не могут иметь стандартные типы xsd и должны быть взяты из только из SimpleDefinition.xsd -->
+	<!-- ................................................................................................................ -->
+	<!-- В данном файле целесообразно вести составные базовые типы, которые будут использоваться непосредственно в артефактах платформы V3, использующих xsd описания
+ 	например типы ФИО, паспортные данные, адрес проживания, местоположение и т.п.
+ 	чуть ниже тип AbstractParameter содержит комментарии, для понимания общего принципа написания составных типов и их элементов   	  
+ -->
+	<!-- Составные типы и элементы платформы V3 -->
+	<!-- ................................................................................................................ -->
+	<!-- ................................................................................................................ -->
+	<!-- Технологические структуры / Technology structures -->
+	<!-- ................................................................................................................ -->
+	<xsd:element name="void">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Пустой элемент (например для использования в описании ответа без параметров)</xsd:documentation>
+            <xsd:documentation xml:lang="en">Dummy element</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence/>
+        </xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="AbstractParameter">
+		<xsd:annotation>
+			<!-- Описание составного типа обязательно, используются теги <xsd:annotation><xsd:documentation> -->
+			<xsd:documentation xml:lang="ru">Структура для абстрактного параметра {имя, значение, тип}</xsd:documentation>
+			<xsd:documentation xml:lang="en">Structure for abstract parameter {name, value, type}</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<!-- набор элементов задается с помощью тега sequence, также могут использоваться choice в качестве выбора элементов -->
+			<xsd:element ref="sd:name"/>
+			<!-- объявление конкретного элемента может делаться с использование атрибута ref (временно не доступно)c ссылкой на требуемый элемент из SimpleDefinition.xsd или данного файла-->
+			<xsd:element name="value" type="sd:Text">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Значение параметра в текстовом виде</xsd:documentation>
+					<xsd:documentation xml:lang="en">Parameter value in text form</xsd:documentation>
+				</xsd:annotation>
+				<!-- Можно создать element нужного типа с другим именем , но в этом случае обязательно добавлять свое описание -->
+			</xsd:element>
+			<xsd:element ref="sd:typeName" minOccurs="1" maxOccurs="1"/>
+			<!-- элемент может отсутствовать или присутствовать несколько раз (включаная неограниченное число) путем добавления атрибутов minOccurs и maxOccurs (по умолчанию равны 1) -->
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+			<!-- Для обратной совместимости данный элемент должен всегда присутствовать в конце sequence (в choice <xsd:element ref="sd:__unknown__") -->
+			<!-- тип составного элемента может быть объявлен непосредственно при объявлении element путем тега complexType без атрибутов, однако более желательным является отдельное объявление такого типа-->
+			<!-- вложенность элементов может быть сколь угодно глубокой, но на практике не рекомендуется использование более трех уровней для сервиса -->
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="abstractParameter" type="tns:AbstractParameter"/>
+	<!-- Создание одноименного element'а данного типа или alias'а аналогично описанному в SimpleDefinition.xsd -->
+	<!-- ................................................................................................................ -->
+	<!-- Мобильный структуры / Mobile structures -->
+	<!-- ................................................................................................................ -->
+	<xsd:complexType name="RoutingNumberParts">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Составные части номера для маршрутизации</xsd:documentation>
+			<xsd:documentation xml:lang="en">All parts of routing number</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:mnc"/>
+			<xsd:element ref="sd:geoCode"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="routingNumberParts" type="tns:RoutingNumberParts"/>
+	<xsd:complexType name="RusRoutingNumberParts">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Составные части номера для маршрутизации в России</xsd:documentation>
+			<xsd:documentation xml:lang="en">All parts of russian routing number</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:mnc"/>
+			<xsd:element ref="sd:geoCode"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="rusRoutingNumberParts" type="tns:RusRoutingNumberParts"/>
+	<!-- ................................................................................................................ -->
+	<!-- Идентификационные и авторизационные структуры / Identification and authorization structures -->
+	<!-- ................................................................................................................ -->
+	<xsd:complexType name="CredentialsElements">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Авторизационные данные</xsd:documentation>
+			<xsd:documentation xml:lang="en">Credentials elements used to control access to information or other resources</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:login"/>
+			<xsd:element ref="sd:password"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="credentialsElements" type="tns:CredentialsElements"/>
+	<xsd:complexType name="InvoiceUserId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru"></xsd:documentation>
+			<xsd:documentation xml:lang="en">Unique identifier of the subscriber in InVoice system</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:userId"/>
+			<xsd:element ref="sd:branchId"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="invoiceUserId" type="tns:InvoiceUserId"/>
+	<xsd:complexType name="UserIds">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Выбор элемента, идентифицирующего абонента</xsd:documentation>
+			<xsd:documentation xml:lang="en">Choice element, which identify subscriber</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element ref="sd:msisdn"/>
+			<xsd:element ref="sd:imsi"/>
+			<xsd:element ref="sd:userId"/>
+			<xsd:element ref="sd:__unknown__"/>
+			<xsd:element ref="tns:invoiceUserId" minOccurs="0"/>			
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:element name="userIds" type="tns:UserIds"/>
+	<xsd:complexType name="UserIdentificators">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Набор элементов, идентифицирующих абонента</xsd:documentation>
+			<xsd:documentation xml:lang="en">Elements used to identify subscriber</xsd:documentation>
+		</xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element ref="sd:msisdn" minOccurs="0"/>
+                    <xsd:element ref="sd:imsi" minOccurs="0"/>
+                    <xsd:element ref="sd:userId" minOccurs="0"/>
+                    <xsd:element name="extension" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element ref="tns:invoiceUserId" minOccurs="0"/>              
+                                <xsd:element name="extension" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+
+	</xsd:complexType>
+	<xsd:element name="userIdentificators" type="tns:UserIdentificators"/>
+	<xsd:complexType name="ServiceIds">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Выбор элемента, идентифицирующего сервис</xsd:documentation>
+			<xsd:documentation xml:lang="en">Choice element, which identify service</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element ref="sd:serviceId"/>
+			<xsd:element ref="sd:serviceName"/>
+			<xsd:element ref="sd:__unknown__"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:element name="serviceIds" type="tns:ServiceIds"/>
+	<xsd:complexType name="ServiceIdentificators">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Набор элементов, идентифицирующих сервис</xsd:documentation>
+			<xsd:documentation xml:lang="en">Set of element, which identify service</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:serviceId" minOccurs="0"/>
+			<xsd:element ref="sd:serviceName" minOccurs="0"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="serviceIdentificators" type="tns:ServiceIdentificators"/>
+	
+	<xsd:complexType name="SubscriberServiceIds">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Выбор элемента, идентифицирующего пользовательский сервис</xsd:documentation>
+			<xsd:documentation xml:lang="en">Choice element, which identify subscriber service</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:element ref="sd:subscriberServiceId"/>
+			<xsd:element name="subscriberServiceIdentificators">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="tns:userIds"/>
+						<xsd:element ref="sd:serviceName"/>
+						<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>		
+			<xsd:element ref="sd:__unknown__"/>
+		</xsd:choice>
+	</xsd:complexType>
+	<xsd:element name="subscriberServiceIds" type="tns:SubscriberServiceIds"/>
+	<xsd:complexType name="Pagination">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Структура для постраничного просмотра: номер страницы и количество записей на странице</xsd:documentation>
+			<xsd:documentation xml:lang="en">Structure for paging, which page number and number of records per page</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:pageNumber"/>
+			<xsd:element ref="sd:recordPerPage"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="pagination" type="tns:Pagination"/>
+	<xsd:complexType name="PrincipalContext">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Структура для представления аутентификационных принципалов</xsd:documentation>
+			<xsd:documentation xml:lang="en">Structure for representation of authenticals principal</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="sd:sessionId" minOccurs="0"/>
+			<xsd:element name="UserAgentPrincipal" type="sd:UniqueName" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Система или браузер, через которую пришел запрос от пользователя</xsd:documentation>
+					<xsd:documentation xml:lang="en">System or browser through which the request came from the user</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+			<xsd:element ref="sd:systemName" minOccurs="0"/>
+			<xsd:element ref="sd:userName" minOccurs="0"/>
+			<xsd:element name="extension" minOccurs="0"><xsd:complexType><xsd:sequence><xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/></xsd:sequence></xsd:complexType></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="principalContext" type="tns:PrincipalContext"/>
+    <xsd:complexType name="ResourceComplexType">
+         <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Составной тип ресурса</xsd:documentation>
+            <xsd:documentation xml:lang="en">Composite type of resource</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+                <xsd:element ref="sd:applicationName" />
+                <xsd:element ref="sd:resourceTypeName" />
+        </xsd:sequence>    
+    </xsd:complexType>  
+    <xsd:element name="resourceComplexType" type="tns:ResourceComplexType" />
+    
+</xsd:schema>

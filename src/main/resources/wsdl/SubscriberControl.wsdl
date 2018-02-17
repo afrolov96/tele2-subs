@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="SubscriberControlBpel" targetNamespace="http://www.bercut.com/specs/aoi/tele2/SubscriberControlBpel"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.bercut.com/specs/aoi/tele2/SubscriberControlBpel" xmlns:ns="http://www.bercut.com/specs/schemas/common-definitions" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://www.bercut.com/specs/aoi/tele2/SubscriberControlBpel">
+            
+            <xsd:element name="GetSubsInfoMSISDNRequest">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="msisdn" type="xsd:string"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="GetSubsInfoSubsIdRequest">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="subs_id" type="xsd:int"></xsd:element>
+                        <xsd:element name="branch_id" type="xsd:decimal"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="SubscriberControlResponse">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="param" type="tns:hashMap" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:complexType name="hashMap">
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"></xsd:element>
+                    <xsd:element name="value" type="xsd:string"></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <message name="GetSubsInfoMSISDNRequest">
+        <part name="parameters" element="tns:GetSubsInfoMSISDNRequest"/>
+    </message>
+
+    <message name="GetSubsInfoMSISDNResponse">
+        <part name="parameters" element="tns:SubscriberControlResponse"/>
+    </message>
+
+    <message name="GetSubsInfoSubsIdRequest">
+        <part name="parameters" element="tns:GetSubsInfoSubsIdRequest"/>
+    </message>
+
+    <message name="GetSubsInfoSubsIdResponse">
+        <part name="parameters" element="tns:SubscriberControlResponse"/>
+    </message>
+
+    <portType name="SubscriberControlPortType">
+        <operation name="GetSubsInfoMSISDN">
+            <input name="GetSubsInfoMSISDNRequest" message="tns:GetSubsInfoMSISDNRequest"/>
+            <output name="GetSubsInfoMSISDNResponse" message="tns:GetSubsInfoMSISDNResponse"/>
+        </operation>
+
+        <operation name="GetSubsInfoSubsId">
+            <input name="GetSubsInfoSubsIdRequest" message="tns:GetSubsInfoSubsIdRequest"/>
+            <output name="GetSubsInfoSubsIdResponse" message="tns:GetSubsInfoSubsIdResponse"/>
+        </operation>
+    </portType>
+    <binding name="SubscriberControlBinding" type="tns:SubscriberControlPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="GetSubsInfoMSISDN">
+            <soap:operation/>
+            <input name="GetSubsInfoMSISDNRequest">
+                <soap:body use="literal"/>
+            </input>
+            <output name="GetSubsInfoMSISDNResponse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="GetSubsInfoSubsId">
+            <soap:operation/>
+            <input name="GetSubsInfoSubsIdRequest">
+                <soap:body use="literal"/>
+            </input>
+            <output name="GetSubsInfoSubsIdResponse">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="SubscriberControlService">
+        <port name="SubscriberControlPort" binding="tns:SubscriberControlBinding">
+            <soap:address location="http://localhost:${HttpDefaultPort}/SubscriberControlService/SubscriberControlPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="SubscriberControl">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes.
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="SubscriberControlPortTypeRole" portType="tns:SubscriberControlPortType"/>
+    </plnk:partnerLinkType>
+</definitions>

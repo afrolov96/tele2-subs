@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.bercut.com/schema/commonBP"
+    xmlns:tns="http://www.bercut.com/schema/commonBP"
+    elementFormDefault="qualified">
+    <xsd:complexType name="Response">
+        <xsd:sequence>
+            <xsd:element name="result" type="tns:relust"></xsd:element>
+            <xsd:element name="lang" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор языка</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="mod" type="tns:modification" minOccurs="0"></xsd:element>
+            <xsd:element name="bpSpecificParams" type="tns:outParams" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+            <xsd:element name="options" type="tns:arrayList" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="outParams">
+        <xsd:annotation>
+            <xsd:documentation>Выходные параметры</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Ключ</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="value" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>значение</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="arrayList">
+        <xsd:annotation>
+            <xsd:documentation>Набор значений типа ключ-значение</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Ключ</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="value" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Значение</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Request">
+        <xsd:sequence>
+            <xsd:element name="MSISDN" type="tns:MSISDN"></xsd:element>
+            <xsd:element name="ServId" type="xsd:decimal" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор услуги</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="UserInput" type="tns:arrayList" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+            <xsd:element name="ApplicationType" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Тип приложения</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="MSISDN">
+        <xsd:annotation>
+            <xsd:documentation>Mobile Subscriber Integrated Services Digital Number — номер мобильного абонента цифровой сети с интеграцией служб для связи в стандартах GSM, UMTS и пр.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+    <xsd:simpleType name="SubsId">
+        <xsd:annotation>
+            <xsd:documentation>Уникальный идентификатор абонента в биллинге</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:decimal"/>
+    </xsd:simpleType>
+    <xsd:complexType name="Subscriber">
+        <xsd:annotation>
+            <xsd:documentation>Идентификатор абонента</xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice>
+            <xsd:element name="MSISDN" type="tns:MSISDN"></xsd:element>
+            <xsd:element name="Subs" type="tns:SubsId"></xsd:element>
+            <xsd:element name="IMSI" type="tns:IMSI"></xsd:element>
+        </xsd:choice>
+    </xsd:complexType>
+    <xsd:complexType name="inParams">
+        <xsd:sequence/>
+    </xsd:complexType>
+    <xsd:complexType name="relust">
+        <xsd:annotation>
+            <xsd:documentation>Результат</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="code" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор сообщения</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="message" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Текст ответа</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="fault">
+        <xsd:annotation>
+            <xsd:documentation>Ошибка</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="vendorCode" type="xsd:decimal">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор ошибки</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="vendorMessage" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Текст ошибки</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="modification">
+        <xsd:annotation>
+            <xsd:documentation>Модификатор</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="code" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>Идентификатор</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="message" type="xsd:string" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation>Строковый идентификатор</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:simpleType name="IMSI">
+        <xsd:annotation>
+            <xsd:documentation>International Mobile Subscriber Identity — международный идентификатор мобильного абонента (индивидуальный номер абонента), ассоциированный с каждым пользователем мобильной связи стандарта GSM, UMTS или CDMA.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+</xsd:schema>

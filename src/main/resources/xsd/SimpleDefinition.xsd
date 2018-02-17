@@ -1,0 +1,1267 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://www.bercut.com/spec/schema/SimpleDefinition" 
+	targetNamespace="http://www.bercut.com/spec/schema/SimpleDefinition" elementFormDefault="qualified" 
+	version="1.5">
+		
+	<!-- В данном файле объявляются только простые (simpleType) типы, которые должны быть использованы во всех сложных типах данных платформы V3
+	Использование стандартных xsd типов в других описаниях (в части формирования типов данных для wsdl, xsd описаний сервисов и пользовательских сервисов, и т.п. артефактов) не допускается
+	Данное ограничие вводится с целью унифицировать и использовать одинаковый и законченный набор простейших типов в платформе V3, в противном случае различные подразделения смогут использовать разные типы данных с одной и той же целью, что приведет к усложнению написания бизнес-процессов и других артефактов платформы V3
+	Расширение данного файла должно происходить только в том случае, если типа с таким функциональным назначением в данном файле еще нет
+	Необходимо согласование расширения данного файла с архитекторами  
+ -->
+ 
+<!-- ................................................................................................................ -->
+ <!-- В данном файле требуется вести простые базовые типы, которые будут использоваться в составных  типах платформы V3
+ 	например типы MSISDN и его ограничения, IMSI и его ограничения, цена, идентификатор валют и его возможные значения, имя и ее ограничения(+ alias'ы фамилия и отчество) и т.п.
+ 	чуть ниже тип DigitsId содержит комментарии, для понимания общего принципа написания простых типов и их элементов    	  
+ -->
+    
+
+<!-- Простые типы и элементы платформы V3 -->
+	<!-- ................................................................................................................ -->
+	
+<!-- ................................................................................................................ -->
+	<!-- Технологические элементы / Technology elements -->
+<!-- ................................................................................................................ -->    
+	<xsd:element name="__unknown__" type="xsd:anyType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Элемент для возможности расширения выбора без потери совместимости</xsd:documentation>
+			<xsd:documentation xml:lang="en">Element for the possibility of extending the choice without losing compatibility</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+		
+<!-- ................................................................................................................ -->	
+	<!-- Цифровые идентификаторы / Digits identifiers -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="DigitsId"><!-- Объявление простого типа c именем DigitsId, используется тег simpleType и атрибут name -->
+		<xsd:annotation><!-- Описание протого типа - обязательно используются теги <xsd:annotation><xsd:documentation> -->
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор любой сущности</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of anything</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:unsignedInt"/><!-- Ограничение данного типа, используется тег <xsd:restriction> и атрибут base в качестве значения которого должен использоватся один из стандартных простых xsd типов. Крайне желательно использование тега pattern для определения regexp строки ограничения типа (например для IMSI это было бы так <xsd:pattern value="\d{1,15}"/>) или других тегов ограничения. В случае использования перечислимого типа требуется использование тега enumeration и добавления описания в каждый вариант (в конец добавляется __unknown__ для обратной совместимости) -->		
+	</xsd:simpleType>
+	<xsd:element name="digitsId" type="tns:DigitsId"/><!-- Для простого использования данного типа (с помощью атрибута ref в других xsd описаниях) создается одноименный element данного типа -->
+	<xsd:element name="userId" type="tns:DigitsId"><!-- Можно создать alias element данного типа с другим именем , но в этом случае обязательно добавлять свое описание -->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для пользователя</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of user</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="branchId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для филиала оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of operators branch</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="tariffId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для тарифного плана оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of operators tariff plan</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="serviceId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для сервиса оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of operators service</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="subscriberServiceId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для пользоваетльского сервиса оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of subscriber operators service</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="productId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для продукта оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of operators product</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="billingId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для экземпляра биллинга оператора(в случае Беркут - In@Voice DB)</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of instance of operators billing system</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="objectId" type="tns:DigitsId">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Цифровой идентификатор объекта или профиля</xsd:documentation>
+             <xsd:documentation xml:lang="en">This a digits identifier of object or profile</xsd:documentation>
+         </xsd:annotation>
+     </xsd:element>
+	<xsd:element name="clientId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Цифровой идентификатор для клиента (в случае Беркут - клиент In@Voice DB)</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a digits identifier of instance of operators billing system</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+     
+     <xsd:element name="jobId" type="tns:DigitsId">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Цифровой идентификатор задачи</xsd:documentation>
+             <xsd:documentation xml:lang="en">This a digits identifier of job</xsd:documentation>
+         </xsd:annotation>
+     </xsd:element>
+		
+<!-- ................................................................................................................ -->
+	<!-- Строковые идентификаторы / String identifiers -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Строковый идентификатор любой сущности</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a string identifier of anything</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value=".{1,64}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="uniqueName" type="tns:UniqueName"/>
+	<xsd:element name="name" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя какой-либо сущности</xsd:documentation>
+			<xsd:documentation xml:lang="en">Name of anything</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+    <xsd:element name="correlationId" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Строковый корреляционный идентификатор</xsd:documentation>
+			<xsd:documentation xml:lang="en">String correlation id</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="typeName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Название типа какой-либо сущности</xsd:documentation>
+			<xsd:documentation xml:lang="en">Name of type of anything</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="userName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя пользователя</xsd:documentation>
+			<xsd:documentation xml:lang="en">User name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>		
+    <xsd:element name="serviceName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя сервиса</xsd:documentation>
+			<xsd:documentation xml:lang="en">Service name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="systemName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя системы</xsd:documentation>
+			<xsd:documentation xml:lang="en">System name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="groupName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя группы</xsd:documentation>
+			<xsd:documentation xml:lang="en">Group name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="roleName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Имя роли</xsd:documentation>
+			<xsd:documentation xml:lang="en">Role name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="applicationName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Название приложения</xsd:documentation>
+			<xsd:documentation xml:lang="en">Application name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="productTypeName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование типа продукта</xsd:documentation>
+			<xsd:documentation xml:lang="en">Name of product type</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="productName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование продукта</xsd:documentation>
+			<xsd:documentation xml:lang="en">Product name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="operatorName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">Operator name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="countryName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование страны</xsd:documentation>
+			<xsd:documentation xml:lang="en">Country name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+    <xsd:element name="regionName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование региона</xsd:documentation>
+			<xsd:documentation xml:lang="en">Region name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="settlementName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Наименование поселения</xsd:documentation>
+			<xsd:documentation xml:lang="en">Settlement name</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="operatorOwnerId" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Мнемоника оператора</xsd:documentation>
+			<xsd:documentation xml:lang="en">Operator mnemo</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="defOwnerId" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Мнемоника владельца номерной ёмкости</xsd:documentation>
+			<xsd:documentation xml:lang="en">MSISDN DEF owner mnemo</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="schedulerName" type="tns:UniqueName">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Наименование шедулера</xsd:documentation>
+             <xsd:documentation xml:lang="en">Name of scheduler</xsd:documentation>
+         </xsd:annotation>
+     </xsd:element>
+
+    <xsd:element name="serviceTypeName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Тип сервиса</xsd:documentation>
+			<xsd:documentation xml:lang="en">Service type</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+    <xsd:element name="resourceTypeName" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Тип ресурса</xsd:documentation>
+			<xsd:documentation xml:lang="en">Resource type</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+    <xsd:element name="tag" type="tns:UniqueName" default="create">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Идентификатор для категоризации, поиска данных и задания временных меток</xsd:documentation>
+			<xsd:documentation xml:lang="en">Identifier for the categorization and retrieval data by timestamp</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:simpleType name="GUID">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Cтатистически уникальный 128-битный идентификатор</xsd:documentation>
+			<xsd:documentation xml:lang="en">Globally Unique Identifier is a unique reference number used as an identifier</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="guid" type="tns:GUID"/>	
+	<xsd:element name="sessionId" type="tns:GUID">
+			<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Cтатистически уникальный 128-битный идентификатор сессии</xsd:documentation>
+			<xsd:documentation xml:lang="en">Globally Unique Identifier is a unique reference number used as session identifier</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+    <xsd:element name="resourceId" type="tns:GUID">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Уникальный 128-битный идентификатор ресурса, например, отчета, медиа-контента </xsd:documentation>
+            <xsd:documentation xml:lang="en">Unique 128-bit Identifier of resource(report, media file, etc.)</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>	
+	
+<!-- ................................................................................................................ -->
+	<!-- Интернет идентификаторы / Internet identifiers -->
+<!-- ................................................................................................................ -->
+	<xsd:element name="login" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Логин пользователя</xsd:documentation>
+			<xsd:documentation xml:lang="en">User login</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+
+	<xsd:simpleType name="Password">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Пароль пользователя в явном виде (не хешированый), может содержать от 4 до 64 символов</xsd:documentation>
+			<xsd:documentation xml:lang="en">A password is a secret word or string of characters used for user authentication to prove identity or access approval to gain access to a resource access</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value=".{4,64}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="password" type="tns:Password"/>	
+	
+	<xsd:simpleType name="EMail">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Адрес электронной почты, требования к значению http://tools.ietf.org/html/rfc822</xsd:documentation>
+			<xsd:documentation xml:lang="en">An email address identifies an email box to which email messages are delivered</xsd:documentation>
+		</xsd:annotation>			
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="^\S+@\S+\.\S+$"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="email" type="tns:EMail"/>
+
+	<xsd:simpleType name="URI">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Универсальный идентификатор ресурса</xsd:documentation>
+			<xsd:documentation xml:lang="en">Uniform resource identifier</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:anyURI" />
+	</xsd:simpleType>
+
+	<xsd:element name="url" type="tns:URI">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Универсальный указатель на ресурс</xsd:documentation>
+			<xsd:documentation xml:lang="en">Uniform resource locator</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="namespace" type="tns:URI">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Универсальный указатель на пространство имён</xsd:documentation>
+			<xsd:documentation xml:lang="en">Uniform namespace locator</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+<!-- ................................................................................................................ -->
+	<!-- Мобильный идентификаторы / Mobile identifiers -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="MSISDN">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Номер мобильного абонента цифровой сети с интеграцией служб для связи (MSISDN - Mobile Subscriber Integrated Services Digital Number) в стандартах GSM, UMTS и пр.</xsd:documentation>
+			<xsd:documentation xml:lang="en">Mobile Subscriber Integrated Services Digital Number (MSISDN) is a number uniquely identifying a subscription in a GSM or a UMTS mobile network</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d|[A-D]|\*|#){1,15}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="msisdn" type="tns:MSISDN"/>
+	<xsd:element name="pstnNumber" type="tns:MSISDN">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Номер абонента в телефонной сети общего пользоватия (PSTN - Public Switched Telephone Network)</xsd:documentation>
+			<xsd:documentation xml:lang="en">Phone number in Public Switched Telephone Network (PSTN)</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="vlr" type="tns:MSISDN">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Номер временной базы хранения абонентов (VLR - Visitor Location Register) в стандартах GSM, UMTS и пр</xsd:documentation>
+			<xsd:documentation xml:lang="en">Number of Visitor Location Register (VLR) in a GSM or a UMTS mobile network</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:element name="unstructuredPhoneNumber" type="tns:UniqueName">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Телефонный номер в произвольном формате</xsd:documentation>
+			<xsd:documentation xml:lang="en">Unstructed/unspecified phone number</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	
+	<xsd:simpleType name="IMSI">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Международный идентификатор мобильного абонента (индивидуальный номер абонента), ассоциированный с каждым пользователем мобильной связи стандарта GSM, UMTS или CDMA</xsd:documentation>
+			<xsd:documentation xml:lang="en">International Mobile Subscriber Identity is used to identify the user of a cellular network and is a unique identification associated with all cellular networks</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d{1,15}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="imsi" type="tns:IMSI"/>	
+
+	<xsd:simpleType name="RusRoutingNumber">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Номер для маршрутизации в России, записанный одной строкой формат записи: D|GeoCode|MNC</xsd:documentation>
+			<xsd:documentation xml:lang="en">A routing number in Russia in format D|GeoCode|MNC</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="D\d{4,4}"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="rusRoutingNumber" type="tns:RusRoutingNumber"/>
+
+<!-- ................................................................................................................ -->
+	<!-- Коды / Codes -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="Code">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Абстрактный код чего-либо (не обязательно является числом)</xsd:documentation>
+			<xsd:documentation xml:lang="en">A abstract code of anything</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:element name="code" type="tns:Code"/>
+
+	<xsd:simpleType name="ThreeDigitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Абстрактный трех значный код чего-либо (не является числом)</xsd:documentation>
+			<xsd:documentation xml:lang="en">A abstract three digit code</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="3"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="threeDigitCode" type="tns:ThreeDigitCode"/>
+	<xsd:element name="mcc" type="tns:ThreeDigitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Мобильный код страны в комбинации с MNC является уникальным идентификатором сотового оператора сетей GSM, CDMA, iDEN, TETRA и UMTS, а также некоторых операторов спутниковой связи</xsd:documentation>
+			<xsd:documentation xml:lang="en">A Mobile Country Code is used in combination with a mobile network code (MCC) (also known as a "MCC / MNC tuple") to uniquely identify a mobile phone operator/carrier using the GSM/LTE, CDMA, iDEN, TETRA and UMTS public land mobile networks and some satellite mobile networks</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<xsd:simpleType name="TwoDigitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Абстрактный двух значный код чего-либо (не является числом)</xsd:documentation>
+			<xsd:documentation xml:lang="en">A abstract two digit code</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="twoDigitCode" type="tns:TwoDigitCode"/>
+	<xsd:element name="mnc" type="tns:TwoDigitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Код мобильной сети в комбинации с MCC является уникальным идентификатором сотового оператора сетей GSM, CDMA, iDEN, TETRA и UMTS, а также некоторых операторов спутниковой связи</xsd:documentation>
+			<xsd:documentation xml:lang="en">A Mobile Network Code is used in combination with a mobile country code (MCC) (also known as a "MCC / MNC tuple") to uniquely identify a mobile phone operator/carrier using the GSM/LTE, CDMA, iDEN, TETRA and UMTS public land mobile networks and some satellite mobile networks</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="geoCode" type="tns:TwoDigitCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Код географического региона</xsd:documentation>
+			<xsd:documentation xml:lang="en">Code of geographical entity</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:simpleType name="DCS">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Схема кодирования данных для SMS</xsd:documentation>
+			<xsd:documentation xml:lang="en">Data Coding Schema for SMS</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:byte"/>
+	</xsd:simpleType>	
+	<xsd:element name="dcs" type="tns:DCS"/>
+
+
+<!-- ................................................................................................................ -->
+	<!-- Текстовые элементы / Text elements -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="Text">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Абстрактный текст не ограниченной длины</xsd:documentation>
+			<xsd:documentation xml:lang="en">Abstract text</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:element name="text" type="tns:Text"/>
+	<xsd:element name="description" type="tns:Text">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Описание любой сущности</xsd:documentation>
+			<xsd:documentation xml:lang="en">Description text of anything.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="smsTextUnboundedSegments" type="tns:Text">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">SMS текст c неограниченным количеством сегментов</xsd:documentation>
+			<xsd:documentation xml:lang="en">SMS text with unbounded number of segments</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+	<!-- 
+	<xsd:simpleType name="SMStext4UCS2">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">SMS текст c одного сегмента для UCS-2 кодировки (то есть 70 символов)</xsd:documentation>
+			<xsd:documentation xml:lang="en">SMS cyrillic text with one segment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:Text">
+			<xsd:maxLength value="70"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="smsText4UCS2" type="tns:SMStext4UCS2"/>
+	
+	<xsd:simpleType name="SMStext4Latin">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">SMS текст c одного сегмента для 7-битной кодировки (то есть 160 символов латиницы)</xsd:documentation>
+			<xsd:documentation xml:lang="en">SMS latin text with one segment</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:Text">
+			<xsd:pattern value="(\p{IsBasicLatin}*)[0,160]"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="smsText4Latin" type="tns:SMStext4Latin"/>
+	 -->
+
+<!-- ................................................................................................................ -->
+	<!-- Количественные элементы / Quantitative elements -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="Number">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Количество чего-либо</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a number of anything</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:unsignedInt"/>
+	</xsd:simpleType>
+	<xsd:element name="number" type="tns:Number"/>
+	<xsd:element name="dayNumber" type="tns:Number">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Количество дней</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a number of day</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="pageNumber" type="tns:Number">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Номер страницы</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a page number</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="recordPerPage" type="tns:Number">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Количество записей на странице</xsd:documentation>
+			<xsd:documentation xml:lang="en">Number of record per page</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+				
+	<xsd:simpleType name="Percentage">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Проценты чего-либо</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a percentage of anything</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:unsignedInt">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="percentage" type="tns:Percentage"/>
+	<xsd:element name="commissionPercentage" type="tns:Percentage">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Процент комиссии</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a percentage of commision</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:simpleType name="MoneyAmount">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Количество денег не привязаное к конкретной валюте</xsd:documentation>
+			<xsd:documentation xml:lang="en">This is amount of money (for any currency)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:decimal">
+			<xsd:fractionDigits value="6"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="moneyAmount" type="tns:MoneyAmount"/>
+	<xsd:element name="rubMoneyAmount" type="tns:MoneyAmount">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Количество рублей</xsd:documentation>
+			<xsd:documentation xml:lang="en">This is amount of russian money</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+<!-- ................................................................................................................ -->
+	<!-- Временные элементы / Time elements -->
+<!-- ................................................................................................................ -->
+
+	<xsd:simpleType name="DateTimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Временная метка (дата и время)</xsd:documentation>
+			<xsd:documentation xml:lang="en">Time stamp (date and time)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:dateTime"/>
+	</xsd:simpleType>
+	<xsd:element name="dateTimeStamp" type="tns:DateTimeStamp"/>
+	<xsd:element name="startDateTime" type="tns:DateTimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Дата и время начала события</xsd:documentation>
+			<xsd:documentation xml:lang="en">Date and time of the begin event</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="endDateTime" type="tns:DateTimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Дата и время окончания события</xsd:documentation>
+			<xsd:documentation xml:lang="en">Date and time of the end event</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:simpleType name="TimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Временная метка (только время)</xsd:documentation>
+			<xsd:documentation xml:lang="en">Time stamp (only time)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:dateTime"/>
+	</xsd:simpleType>
+	<xsd:element name="timeStamp" type="tns:TimeStamp"/>
+	<xsd:element name="startTime" type="tns:TimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Время начала события</xsd:documentation>
+			<xsd:documentation xml:lang="en">Time of the begin event</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="endTime" type="tns:TimeStamp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Время окончания события</xsd:documentation>
+			<xsd:documentation xml:lang="en">Time of the end event</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:simpleType name="Delay">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Временная задержка</xsd:documentation>
+			<xsd:documentation xml:lang="en">Тemporary delay</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:duration"/>
+	</xsd:simpleType>
+	<xsd:element name="delay" type="tns:Delay"/>
+	<xsd:element name="duration" type="tns:Delay">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Длительность</xsd:documentation>
+			<xsd:documentation xml:lang="en">Duration</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="period" type="tns:Delay">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Период между событиями</xsd:documentation>
+			<xsd:documentation xml:lang="en">Period beetwin events</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="timeZone" type="tns:Delay">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Сдвиг времени для часового пояса относительно времени Гринвича</xsd:documentation>
+			<xsd:documentation xml:lang="en">Time shift for the time zone relative to Greenwich time</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+		
+	<xsd:simpleType name="Minute">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Значение времени - минуты</xsd:documentation>
+             <xsd:documentation xml:lang="en">Value of time - minutes</xsd:documentation>
+         </xsd:annotation>
+         <xsd:restriction base="xsd:unsignedByte">
+             <xsd:minInclusive value="0"></xsd:minInclusive>
+             <xsd:maxInclusive value="59"></xsd:maxInclusive>
+         </xsd:restriction>
+     </xsd:simpleType>
+     <xsd:element name="minute" type="tns:Minute"/>
+     
+     <xsd:simpleType name="Hour">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Значение времени - часы</xsd:documentation>
+             <xsd:documentation xml:lang="en">Value of time - hours</xsd:documentation>
+         </xsd:annotation>
+         <xsd:restriction base="xsd:unsignedByte">
+             <xsd:minInclusive value="0"></xsd:minInclusive>
+             <xsd:maxInclusive value="23"></xsd:maxInclusive>
+         </xsd:restriction>
+     </xsd:simpleType>
+     <xsd:element name="hour" type="tns:Hour"/>
+
+     <xsd:simpleType name="DayOfMonth">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Значение времени - день месяца</xsd:documentation>
+             <xsd:documentation xml:lang="en">Value of time - day of month type</xsd:documentation>
+         </xsd:annotation>
+         <xsd:restriction base="xsd:unsignedByte">
+             <xsd:minInclusive value="1"></xsd:minInclusive>
+             <xsd:maxInclusive value="31"></xsd:maxInclusive>
+         </xsd:restriction>
+     </xsd:simpleType>
+     <xsd:element name="dayOfMonth" type="tns:DayOfMonth"/>
+
+	<xsd:simpleType name="DayOfWeek">
+ 		<xsd:annotation>
+ 			<xsd:documentation xml:lang="ru">День недели (понедельник, вторник, среда...)</xsd:documentation>
+ 			<xsd:documentation xml:lang="en">Name of day (Monday, Tuesday, Wednesday...)</xsd:documentation>
+ 		</xsd:annotation>
+ 		<xsd:restriction base="xsd:string">
+ 			<xsd:enumeration value="Monday"/>
+ 			<xsd:enumeration value="Tuesday"/>
+             <xsd:enumeration value="Wednesday"/>
+             <xsd:enumeration value="Thursday"/>
+             <xsd:enumeration value="Friday"/>
+             <xsd:enumeration value="Saturday"/>
+             <xsd:enumeration value="Sunday"/>
+ 		</xsd:restriction>
+ 	</xsd:simpleType>
+ 	<xsd:element name="dayOfWeek" type="tns:DayOfWeek"/>	
+
+     <xsd:simpleType name="Month">
+         <xsd:annotation>
+             <xsd:documentation xml:lang="ru">Значение времени -  месяц (январь, февраль, март...)</xsd:documentation>
+             <xsd:documentation xml:lang="en">Value of time - month</xsd:documentation>
+         </xsd:annotation>
+ 		 <xsd:restriction base="xsd:string">			 
+ 			 <xsd:enumeration value="January"/>
+ 			 <xsd:enumeration value="February"/>
+ 			 <xsd:enumeration value="March"/>
+ 			 <xsd:enumeration value="April"/>
+ 			 <xsd:enumeration value="May"/>
+ 			 <xsd:enumeration value="June"/>
+ 			 <xsd:enumeration value="July"/>
+ 			 <xsd:enumeration value="August"/>
+ 			 <xsd:enumeration value="September"/>
+ 			 <xsd:enumeration value="October"/>
+ 			 <xsd:enumeration value="November"/>
+ 			 <xsd:enumeration value="December"/>	
+ 		 </xsd:restriction>
+ 	 </xsd:simpleType>
+	 <xsd:element name="month" type="tns:Month"/>
+
+<!-- ................................................................................................................ -->
+	<!-- Логические элементы / Logic elements -->
+<!-- ................................................................................................................ -->
+
+	
+	<xsd:simpleType name="YesNo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Абстрактный параметр только два значения да или нет</xsd:documentation>
+			<xsd:documentation xml:lang="en">Abstract parameter only yes or no value</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:boolean"/>
+	</xsd:simpleType>
+	<xsd:element name="yesNo" type="tns:YesNo"/>
+	<xsd:element name="availability" type="tns:YesNo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Доступность чего-либо, только да или нет</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a availability - true or false</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>	
+	<xsd:element name="switchOnOff" type="tns:YesNo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Двух позиционный переключатель - включен или выключен</xsd:documentation>
+			<xsd:documentation xml:lang="en">Two position switch - on/off</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="fraudSuspicion" type="tns:YesNo">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Подозрение в мошенничестве, только да или нет</xsd:documentation>
+			<xsd:documentation xml:lang="en">Fraud suspicion  - true or false</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	    
+	
+	
+	<xsd:simpleType name="RegExp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Содержит любюе регулярное выражение</xsd:documentation>
+			<xsd:documentation xml:lang="en">Uniform regexp expression</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string" /> <!-- TO DO  -->
+	</xsd:simpleType>
+	<xsd:element name="regexp" type="tns:RegExp"/>
+	<xsd:element name="mask" type="tns:RegExp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Маска для любой строки</xsd:documentation>
+			<xsd:documentation xml:lang="en">Mask for any string</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="msisdnMask" type="tns:RegExp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Маска(регулярное выражение) для MSISDN</xsd:documentation>
+			<xsd:documentation xml:lang="en">Mask (regular expression) for MSISDN</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="vlrMask" type="tns:RegExp">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Маска(регулярное выражение) для VLR</xsd:documentation>
+			<xsd:documentation xml:lang="en">Mask (regular expression) for VLR</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	
+    <xsd:simpleType name="XPath">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Содержит x-path выражение</xsd:documentation>
+			<xsd:documentation xml:lang="en">X-path expression</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<xsd:element name="xpath" type="tns:XPath" default="/"/>
+
+<!-- ................................................................................................................ -->
+	<!-- Перечислимые элементы / Enumeration elements -->
+<!-- ................................................................................................................ -->
+	<xsd:simpleType name="SubscriberChargingType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Тип тарификации абонента - в процессе звонка или после звонка</xsd:documentation>
+			<xsd:documentation xml:lang="en">This a restriction base type of charging for operators subscribers: online(prepaid) and offline(postpaid)</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="prepaid">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">тарификация абонента в процессе звонка</xsd:documentation>
+					<xsd:documentation xml:lang="en">online charging for subscriber</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="postpaid">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">тарификация абонента после звонка</xsd:documentation>
+					<xsd:documentation xml:lang="en">offline charging for subscriber</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="subscriberChargingType" type="tns:SubscriberChargingType" default="prepaid"/>	
+	
+	<xsd:simpleType name="FaultCategory">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Категория исключительного события</xsd:documentation>
+			<xsd:documentation xml:lang="en">Category of fault event</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="fatal">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Событие, после которого не возможно корректно продолжить работу</xsd:documentation>
+					<xsd:documentation xml:lang="en">Event, after which it is impossible to continue to work correctly</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="error">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Произошла ошибка, после которой возможно продолжение работы</xsd:documentation>
+					<xsd:documentation xml:lang="en">An error has occurred, after which possible continue of work</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="notice">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Произошло событие, на которое стоит обратить внимание</xsd:documentation>
+					<xsd:documentation xml:lang="en">There was an event to which you should pay attention</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>			
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="faultCategory" type="tns:FaultCategory" default="error"/>
+
+	<xsd:simpleType name="ServiceStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Cодержит набор возможных статусов для сервисов</xsd:documentation>
+			<xsd:documentation xml:lang="en">Set of availible service status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="active">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис активен</xsd:documentation>
+					<xsd:documentation xml:lang="en">Аctive service</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="unactive">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис неактивен</xsd:documentation>
+					<xsd:documentation xml:lang="en">Non active service</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="blocked">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис заблокирован</xsd:documentation>
+					<xsd:documentation xml:lang="en">Service blocked</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="unblocked">			
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис разблокирован</xsd:documentation>
+					<xsd:documentation xml:lang="en">Service unblocked</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="testing">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис тестируется</xsd:documentation>
+					<xsd:documentation xml:lang="en">Service testing</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="archived">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис в архиве</xsd:documentation>
+					<xsd:documentation xml:lang="en">Service archived</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="canceled">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Сервис отменен</xsd:documentation>
+					<xsd:documentation xml:lang="en">Service canceled</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>			
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="serviceStatus" type="tns:ServiceStatus" default="unactive"/>
+
+    <xsd:simpleType name="ResourceStatus">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Cодержит набор возможных статусов для ресурсов</xsd:documentation>
+			<xsd:documentation xml:lang="en">Set of availible service status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="active">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Ресурс доступен</xsd:documentation>
+					<xsd:documentation xml:lang="en">Аctive resource</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="deleted">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Ресурс удален</xsd:documentation>
+					<xsd:documentation xml:lang="en">Resource deleted</xsd:documentation>		
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>			
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="resourceStatus" type="tns:ResourceStatus" default="active">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Набор возможных статусов ресурса</xsd:documentation>
+            <xsd:documentation xml:lang="en">Statuses for resource object</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    
+            
+    <xsd:simpleType name="CurrencyCode">
+    <xsd:annotation>
+        <xsd:documentation xml:lang="ru">Код валюты по стандарту ISO 4217</xsd:documentation>
+        <xsd:documentation xml:lang="en">Currency code(ISO 4217)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="RUB">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Российский рубль</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Russian ruble</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>                    
+                <xsd:enumeration value="AUD">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Австралийский доллар</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Australian Dollar</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="AZN">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Азербайджанский манат</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Azerbaijan Manat</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>         
+                <xsd:enumeration value="GBP">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Фунт стерлингов Соединенного королевства</xsd:documentation>
+                            <xsd:documentation xml:lang="en">British Pound Sterling</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>     
+                <xsd:enumeration value="AMD">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Армянский драм</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Armenia Dram</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>       
+                <xsd:enumeration value="BYR">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Белорусский рубль</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Belarussian Ruble</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>         
+                <xsd:enumeration value="BGN">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Болгарский лев</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Bulgarian lev</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>   
+                <xsd:enumeration value="BRL">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Бразильский реал</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Brazil Real</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>     
+                <xsd:enumeration value="HUF">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Венгерский форинт</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Hungarian Forint</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="DKK">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Датская крона</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Danish Krone</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="USD">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Доллар США</xsd:documentation>
+                            <xsd:documentation xml:lang="en">US Dollar</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="EUR">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Евро</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Euro</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="INR">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Индийская рупия</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Indian Rupee</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="KZT">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Казахский тенге</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Kazakh Tenge</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="CAD">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Канадский доллар</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Canadian Dollar</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="KGS">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Киргизский сом</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Kyrgyzstan Som</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="CNY">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Китайский юань</xsd:documentation>
+                            <xsd:documentation xml:lang="en">China Yuan</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="LTL">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Литовский лит</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Lithuanian Lita</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="MDL">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Молдавский лей</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Moldova Lei</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="NOK">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Норвежская крона</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Norwegian Krone</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="PLN">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Польский злотый</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Polish Zloty</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="RON">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Новый румынский лей</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Romanian Leu</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>  
+                <xsd:enumeration value="XDR">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">СДР (специальные права заимствования)</xsd:documentation>
+                            <xsd:documentation xml:lang="en">SDR</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>         
+                <xsd:enumeration value="SGD">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Сингапурский доллар</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Singapore Dollar</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>     
+                <xsd:enumeration value="TJS">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Таджикский сомони</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Tajikistan Ruble</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="TRY">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Турецкая лира</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Turkish Lira</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="TMT">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Новый туркменский манат</xsd:documentation>
+                            <xsd:documentation xml:lang="en">New Turkmenistan Manat</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="UZS">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Узбекский сум</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Uzbekistan Sum</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="UAH">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Украинская гривна</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Ukrainian Hryvnia</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="CZK">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Чешская крона</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Czech Koruna</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="SEK">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Шведская крона</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Swedish Krona</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="CHF">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Швейцарский франк</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Swiss Franc</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="ZAR">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Южноафриканский рэнд</xsd:documentation>
+                            <xsd:documentation xml:lang="en">S.African Rand</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="KRW">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Вон Республики Корея</xsd:documentation>
+                            <xsd:documentation xml:lang="en">South Korean Won</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration> 
+                <xsd:enumeration value="JPY">
+                    <xsd:annotation>
+                            <xsd:documentation xml:lang="ru">Японская иена</xsd:documentation>
+                            <xsd:documentation xml:lang="en">Japanese Yen</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:enumeration>
+            </xsd:restriction>
+	</xsd:simpleType>
+    <xsd:element name="currencyCode" type="tns:CurrencyCode"/>
+    
+    <xsd:simpleType name="CrudOperation">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Словарь операций CRUD</xsd:documentation>
+            <xsd:documentation xml:lang="en">Dictionary of CRUD operations</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Create"/>
+            <xsd:enumeration value="Read"/>
+            <xsd:enumeration value="Update"/>
+            <xsd:enumeration value="Delete"/>
+            <xsd:enumeration value="__unknown__" />
+        </xsd:restriction>  
+    </xsd:simpleType>
+    <xsd:element name="userAccessOperation" type="tns:CrudOperation" >
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">CRUD-операции доступные для владельца ресурса</xsd:documentation>
+            <xsd:documentation xml:lang="en">Available CRUD-operations for owner of resource</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="anonymousAccessOperation" type="tns:CrudOperation" >
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">CRUD-операции доступные при неавторизованном доступе</xsd:documentation>
+            <xsd:documentation xml:lang="en">Available CRUD-operations for non-authorized users</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    
+    
+<!-- TO DO -->
+<!-- Must be enumeration -->
+	
+	<xsd:simpleType name="SubscriberCategory">
+		<xsd:annotation>
+			<xsd:documentation></xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="tns:DigitsId"/>
+	</xsd:simpleType>
+	<xsd:element name="subscriberCategory" type="tns:SubscriberCategory"/>
+	<xsd:element name="subscriberFaultCategory" type="tns:SubscriberCategory"/>
+	<xsd:element name="subscriberType" type="tns:SubscriberCategory"/>
+	
+
+	<xsd:element name="typeClientId" type="tns:DigitsId">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en"></xsd:documentation>
+			<xsd:documentation xml:lang="ru"></xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="jurTypeClient" type="tns:DigitsId"> <!-- это явный кандидат в простое перечесление c понятными названиями-->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">English description</xsd:documentation>
+			<xsd:documentation xml:lang="ru">Юридический тип клиента</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="typeConsumption" type="tns:DigitsId"> <!-- это явный кандидат в простое перечесление c понятными названиями-->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">English description</xsd:documentation>
+			<xsd:documentation xml:lang="ru">Тип потребления</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:simpleType name="ContractIds">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="ru">Выходные контракты(ограничений на состав возвращаемых параметров)  для любых сервисов</xsd:documentation>
+			<xsd:documentation xml:lang="en">Default output contract types (restriction for output data content) for all service types</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="all">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Получить все описание сервиса (включая заголовок сервиса и его параметры)</xsd:documentation>
+					<xsd:documentation xml:lang="en">Get all the service description (including the service header and its parameters)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="parameters">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Получить только параметры сервиса</xsd:documentation>
+					<xsd:documentation xml:lang="en">Get only the service parameters</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="header">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">Получить только заголовок сервиса</xsd:documentation>
+					<xsd:documentation xml:lang="en">Get only the service header</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="contractIds" type="tns:ContractIds"/>
+	
+	<xsd:simpleType name="Operator">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Имена крупнейших мобильных операторов России</xsd:documentation>
+            <xsd:documentation xml:lang="en">Names of the largest mobile network operators in Russia</xsd:documentation>
+        </xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="megafon"/>
+			<xsd:enumeration value="mts"/>
+			<xsd:enumeration value="beeline"/>
+			<xsd:enumeration value="tele2"/>
+			<xsd:enumeration value="__unknown__">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="ru">неизвестное значение (для возможности расширения набора без потери совместимости)</xsd:documentation>
+					<xsd:documentation xml:lang="en">unknown value (for the possibility of extending the set without losing compatibility)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="operator" type="tns:Operator"/>
+
+</xsd:schema>

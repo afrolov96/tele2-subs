@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.bercut.com/spec/schema/ServiceDefinition"
+    xmlns:tns="http://www.bercut.com/spec/schema/ServiceDefinition"
+    xmlns:sd="http://www.bercut.com/spec/schema/SimpleDefinition"
+    xmlns:cd="http://www.bercut.com/spec/schema/ComplexDefinition"
+    elementFormDefault="qualified"
+    version="1.0">
+
+ <!-- В данном файле объявляются только сложные типы (complexType) типы , которые могут быть использованы в платформе V3 при создании интерфейсов и неактульны для других артефактов платформы V3
+    Крайне желательно использовать типы описанные в данном файле (в части формирования wsdl)
+    Данное файл вводится с целью унифицировать и использовать одинаковый и законченный набор сложных типов  в платформе V3, что приведет к значительному упрощению написания WSDL интерфейсов и BP платформы V3
+    Расширение данного файла должно происходить только в том случае, если типа с таким функциональным назначением в данном файле еще нет или требуется расширить отдельный тип дополнительными элементами
+    Необходимо согласование расширения данного файла с архитекторами  
+    -->
+ 
+    <!-- Help -->
+    <!-- ................................................................................................................ -->
+    <!-- Формат описания составных типов и их элементов полностью совпадает с форматом описанным в ComplexDefinition.xsd
+     В данном файле целесообразно описать стандатные составные типы для описания ошибочных ситуации
+    -->
+    <!-- Cоставные типы для WSDL описаний платформы V3 -->
+    <!-- ................................................................................................................ -->
+
+    <xsd:import schemaLocation="SimpleDefinition.xsd" namespace="http://www.bercut.com/spec/schema/SimpleDefinition"/>
+    <xsd:import schemaLocation="ComplexDefinition.xsd" namespace="http://www.bercut.com/spec/schema/ComplexDefinition"/>
+
+    <xsd:complexType name="SystemFault">
+        <!-- jax-me bug - fix later
+        <xsd:annotation>
+            <xsd:documentation xml:lang="ru">Элемент для всех системных сбоев</xsd:documentation>
+            <xsd:documentation xml:lang="en">Element for all system faults</xsd:documentation>
+        </xsd:annotation>
+        -->
+        <xsd:sequence>
+            <xsd:element ref="sd:description" minOccurs="0"/>
+            <xsd:element name="stackTrace" minOccurs="0">
+                <xsd:complexType>
+                    <!-- jax-me bug - fix later
+                    <xsd:annotation>
+                        <xsd:documentation xml:lang="ru">Cтек для всех системных сбоев</xsd:documentation>
+                        <xsd:documentation xml:lang="en">Stack for all system faults</xsd:documentation>
+                    </xsd:annotation>
+                    -->
+                    <xsd:sequence>
+                        <xsd:element name="frame">
+                            <xsd:complexType>
+                                <!-- jax-me bug - fix later
+                                <xsd:annotation>
+                                    <xsd:documentation xml:lang="ru">Запись в стеке</xsd:documentation>
+                                    <xsd:documentation xml:lang="en">Record in stack</xsd:documentation>
+                                </xsd:annotation>
+                                -->
+                                <xsd:sequence>
+                                    <xsd:element name="class" type="sd:UniqueName">
+                                        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                            <xsd:documentation xml:lang="ru">Имя класса</xsd:documentation>
+                                            <xsd:documentation xml:lang="en">Class name</xsd:documentation>
+                                        </xsd:annotation>
+                                        -->
+                                    </xsd:element>
+                                    <xsd:element name="file" type="sd:UniqueName">
+                                        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                            <xsd:documentation xml:lang="ru">Имя файла</xsd:documentation>
+                                            <xsd:documentation xml:lang="en">File name</xsd:documentation>
+                                        </xsd:annotation>
+                                        -->
+                                    </xsd:element>
+                                    <xsd:element name="method" type="sd:UniqueName">
+                                        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                            <xsd:documentation xml:lang="ru">Имя метода</xsd:documentation>
+                                            <xsd:documentation xml:lang="en">Method name</xsd:documentation>
+                                        </xsd:annotation>
+                                        -->
+                                    </xsd:element>
+                                    <xsd:element name="line" type="sd:UniqueName">
+                                        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                            <xsd:documentation xml:lang="ru">Номер строки</xsd:documentation>
+                                            <xsd:documentation xml:lang="en">Line number</xsd:documentation>
+                                        </xsd:annotation>
+                                        -->
+                                    </xsd:element>
+                                    <xsd:element name="extension" minOccurs="0">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="extension" minOccurs="0">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="extension" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="systemFault" type="tns:SystemFault"/>
+
+    <xsd:complexType name="BusinessFault">
+        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                                <xsd:documentation xml:lang="ru">Базовый тип для всех бизнес сбоев</xsd:documentation>
+                                                <xsd:documentation xml:lang="en">Base type for all business faults</xsd:documentation>
+                                        </xsd:annotation>
+        -->
+        <xsd:sequence>
+            <xsd:element ref="sd:faultCategory"/>
+            <xsd:element ref="sd:code"  minOccurs="0"/>
+            <xsd:element ref="sd:description" minOccurs="0"/>
+            <xsd:element name="extension" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="businessFault" type="tns:BusinessFault"/>
+
+    <xsd:element name="objectNotFoundFault" type="tns:BusinessFault">
+        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                                <xsd:documentation xml:lang="ru">Исключение возникает, когда не найдено ни одного объекта, соответствующего заданным параметрам</xsd:documentation>
+                                                <xsd:documentation xml:lang="en">Exception raises when required object not found</xsd:documentation>
+                                        </xsd:annotation>
+        -->
+    </xsd:element>
+
+    <xsd:element name="incorrectFormatFault" type="tns:BusinessFault">
+        <!-- jax-me bug - fix later
+                                        <xsd:annotation>
+                                                <xsd:documentation xml:lang="ru">Исключение возникает, когда формат входных данных некорректен</xsd:documentation>
+                                                <xsd:documentation xml:lang="en">Exception raises when format of incoming data is incorrect</xsd:documentation>
+                                        </xsd:annotation>
+        -->
+    </xsd:element>
+
+</xsd:schema>

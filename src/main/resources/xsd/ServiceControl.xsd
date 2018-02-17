@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.bercut.com/schema/ServiceControl"
+    xmlns:tns="http://www.bercut.com/schema/ServiceControl"
+    elementFormDefault="qualified"
+    xmlns:servd="http://www.bercut.com/spec/schema/ServiceDefinition"
+    xmlns:ns2="http://www.bercut.com/schema/commonBP"
+    xmlns:sd="http://www.bercut.com/spec/schema/SimpleDefinition">
+    <!--xsd:import schemaLocation="commonCareMDefinitions.xsd" namespace="http://www.bercut.com/schema/commonBP"/>
+        <xsd:import schemaLocation="SimpleDefinition.xsd" namespace="http://www.bercut.com/spec/schema/SimpleDefinition"/>
+        <xsd:import schemaLocation="ServiceDefinition.xsd" namespace="http://www.bercut.com/spec/schema/ServiceDefinition"/-->
+            <xsd:element name="checkAbilityRequest">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="subscriber" type="tns:Subscriber"></xsd:element>
+                        <xsd:element name="serv_id" type="xsd:integer"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="changeServiceRequest">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="subscriber" type="tns:Subscriber"></xsd:element>
+                        <xsd:element name="serv_id" type="xsd:integer"></xsd:element>
+                        <xsd:element name="operation" type="xsd:string"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="checkActiveRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="subscriber" type="tns:Subscriber"></xsd:element>
+                        <xsd:element name="serv_id" type="xsd:integer"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="serviceResponse">
+                <xsd:complexType >
+                    <xsd:sequence>
+                        <xsd:element name="code" type="xsd:integer"></xsd:element>
+                        <xsd:element name="description" type="xsd:string"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="BusinessException" type="servd:BusinessFault"></xsd:element>
+    <xsd:element name="SystemException" type="servd:SystemFault"></xsd:element>
+    <xsd:element name="fault" type="ns2:fault"></xsd:element>
+    <xsd:complexType name="Subscriber">
+        <xsd:choice>
+            <xsd:element name="msisdn" type="ns2:MSISDN"></xsd:element>
+            <xsd:element name="subs" type="tns:subs"></xsd:element>
+        </xsd:choice>
+    </xsd:complexType>
+    <xsd:complexType name="subs">
+        <xsd:sequence>
+            <xsd:element name="subs_id" type="xsd:int"></xsd:element>
+            <xsd:element name="branch_id" type="xsd:decimal"></xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
